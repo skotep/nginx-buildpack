@@ -9,9 +9,12 @@ events {
 }
 
 http {
-        gzip on;
-        gzip_comp_level 2;
-        gzip_min_length 512;
+	gzip on;
+	gzip_comp_level 2;
+	gzip_min_length 512;
+	gzip_proxied expired no-cache no-store private auth;
+	gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml;
+	gzip_disable "MSIE [1-6]\.";
 
 	server_tokens off;
 
@@ -35,11 +38,26 @@ http {
 		server_name _;
 		keepalive_timeout 5;
 
-		location / {
-			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-			proxy_set_header Host $http_host;
-			proxy_redirect off;
-			proxy_pass http://app_server;
-		}
+        root .;
+
+#		location / {
+#			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#			proxy_set_header Host $http_host;
+#			proxy_redirect off;
+#			proxy_pass http://app_server;
+#		}
+
+        location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml)$ {
+            gzip_static on;
+            gzip on;
+            etag on;
+            expires 1y;
+            add_header Cache-Control public;
+            add_header ETag "";
+        }
+
+        location / {
+            try_files $uri /index.html;
+        }
 	}
 }
