@@ -5,7 +5,6 @@ rm -f $psmgr
 mkfifo $psmgr
 
 #Evaluate config to get $PORT
-export BUILD_DIR=$(dirname $0)/..
 erb config/nginx.conf.erb > config/nginx.conf
 
 n=1

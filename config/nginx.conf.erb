@@ -38,7 +38,7 @@ http {
 		server_name _;
 		keepalive_timeout 5;
 
-        root .<%= ENV["BUILD_DIR"] %>;
+        root /app/;
 
 #		location / {
 #			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
