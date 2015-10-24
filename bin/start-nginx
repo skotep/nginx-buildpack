@@ -34,8 +34,10 @@ echo 'buildpack=nginx at=logs-initialized'
     # E.g. bin/start-nginx bundle exec unicorn -c config/unicorn.rb
     COMMAND=${@:$n}
     echo "buildpack=nginx at=start-app cmd=$COMMAND"
-    $COMMAND
-    echo 'app' >$psmgr
+    if [[ $COMMAND != "" ]]; then
+         $COMMAND
+         echo 'app' >$psmgr
+    fi
 ) &
 
 if [[ -z "$FORCE" ]]
